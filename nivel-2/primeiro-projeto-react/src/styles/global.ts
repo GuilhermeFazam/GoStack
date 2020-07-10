@@ -6,12 +6,13 @@ export default createGlobalStyle`
 *{
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 #root{
   max-width: 960px;
   margin: 0 auto;
-  padding-top:40px;
+  padding: 40px 20px;
 
 }
 
