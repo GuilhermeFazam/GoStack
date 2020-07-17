@@ -3,19 +3,17 @@ import { animated } from 'react-spring';
 
 interface ContainerProps {
     type?: 'info' | 'success' | 'error';
-    hasDescription: boolean;
+    hasdescription?: boolean;
 }
 const toastTypeVariations = {
     info: css`
         background: #ebf8ff;
         color: #3172b7;
     `,
-
     success: css`
         background: #e6fffa;
         color: #2e656a;
     `,
-
     error: css`
         background: #fddede;
         color: #c53030;
@@ -66,7 +64,7 @@ export const Container = styled(animated.div) <ContainerProps>`
     }
 
     ${props =>
-        !props.hasDescription &&
+        !props.hasdescription &&
         css`
             button {
                 top: 15px;

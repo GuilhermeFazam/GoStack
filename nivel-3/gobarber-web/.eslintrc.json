@@ -22,8 +22,14 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+    "plugins": [
+        "react",
+        "react-hooks",
+        "@typescript-eslint",
+        "prettier"
+    ],
     "rules": {
+        "@typescript-eslint/ban-types": "off",
         "react/jsx-indent": "off",
         "react/jsx-indent-props": "off",
         "camelcase": "off",
@@ -37,7 +43,9 @@
         "react/jsx-filename-extension": [
             1,
             {
-                "extensions": [".tsx"]
+                "extensions": [
+                    ".tsx"
+                ]
             }
         ],
         "@typescript-eslint/explicit-function-return-type": [
