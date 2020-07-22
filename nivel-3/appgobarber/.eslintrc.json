@@ -29,6 +29,9 @@
         "prettier"
     ],
     "rules": {
+        "no-shadow": "off",
+        "react/prop-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/ban-types": "off",
         "react/jsx-indent": "off",
         "react/jsx-indent-props": "off",
