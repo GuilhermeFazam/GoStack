@@ -1,10 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Button } from 'react-native';
 
 import { useAlth } from '../../hooks/auth';
 // import { Container } from './styles';
 
-import Button from '../../components/Button';
+// import Button from '../../components/Button';
 
 const Dashboard: React.FC = () => {
     const { signOut } = useAlth();
@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
                 alignItems: 'center',
             }}
         >
-            <Button onPress={signOut}>Sair</Button>
+            <Button title="Sair" onPress={signOut} />
         </View>
     );
 };
