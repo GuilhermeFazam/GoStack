@@ -5,30 +5,10 @@ import AppError from '@shared/errors/AppError';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import AppointmentRepository from '@modules/appointments/repositories/AppointmentRepository';
 
-/**
- * [X] Recebimento das informações
- * [X] Tratativa de erros e exeções
- * [X] Acesso ao repositorio
- */
-
 interface RequestDTO {
     provider_id: string;
     date: Date;
 }
-
-// DRY: Don't repeat Yourself - Não repita regra de negocio dentro da sua aplicação
-
-/**
- * Dependency Inversion (SOLID)
- *
- *
- * SRP (Single Responsability Principle);
- * OCP (Open–closed Principle);
- * LSP (Liskov substitution Principle);
- * ISP (Interface segregation Principle);
- * DIP (Dependency Inversion Principle).
- *
- */
 
 class CreateAppointmentService {
     public async execute({
