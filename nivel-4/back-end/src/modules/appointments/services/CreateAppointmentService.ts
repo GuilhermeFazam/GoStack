@@ -26,7 +26,7 @@ class CreateAppointmentService {
     constructor(
         @inject('AppointmentRepository')
         private appointmentRepository: IAppointmentsRepository,
-    ) { }
+    ) {}
 
     public async execute({
         provider_id,
