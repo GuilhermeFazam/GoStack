@@ -2,7 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import { isAfter, addHours } from 'date-fns';
 import AppError from '@shared/errors/AppError';
 import IUserRepository from '@modules/users/repositories/IUsersRepository';
-import IUserTokenRepository from '../repositories/IUserTokenRepository';
+import IUserTokensRepository from '../repositories/IUserTokensRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
@@ -17,7 +17,7 @@ class ResetPasswordService {
         private usersRepository: IUserRepository,
 
         @inject('UserTokensRepository')
-        private userTokensRepository: IUserTokenRepository,
+        private userTokensRepository: IUserTokensRepository,
 
         @inject('HashProvider')
         private hashProvider: IHashProvider,
