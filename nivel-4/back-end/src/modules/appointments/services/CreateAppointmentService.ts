@@ -20,8 +20,8 @@ interface IRequest {
 @injectable()
 class CreateAppointmentService {
     constructor(
-        @inject('AppointmentRepository')
-        private appointmentRepository: IAppointmentsRepository,
+        @inject('AppointmentsRepository')
+        private appointmentsRepository: IAppointmentsRepository,
     ) {}
 
     public async execute({
@@ -30,7 +30,7 @@ class CreateAppointmentService {
     }: IRequest): Promise<Appointment> {
         const appointmentDate = startOfHour(date);
 
-        const findAppointmentInSameDate = await this.appointmentRepository.findBydate(
+        const findAppointmentInSameDate = await this.appointmentsRepository.findBydate(
             appointmentDate,
         );
 
@@ -38,7 +38,7 @@ class CreateAppointmentService {
             throw new AppError('This appointment is already booked');
         }
 
-        const appointment = await this.appointmentRepository.create({
+        const appointment = await this.appointmentsRepository.create({
             provider_id,
             date: appointmentDate,
         });

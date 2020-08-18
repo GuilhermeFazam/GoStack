@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
-import IUserRepository from '@modules/users/repositories/IUsersRepository';
 
+import IUserRepository from '@modules/users/repositories/IUsersRepository';
 import User from '@modules/users/infra/typeorm/entities/User';
 
 interface IRequest {
