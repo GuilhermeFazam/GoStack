@@ -8,7 +8,7 @@ let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let updateProfile: UpdateProfileService;
 
-describe('UpdateProfile', () => {
+describe('UpdateProfileService', () => {
     beforeEach(() => {
         fakeUsersRepository = new FakeUsersRepository();
         fakeHashProvider = new FakeHashProvider();
@@ -52,6 +52,16 @@ describe('UpdateProfile', () => {
         await expect(
             updateProfile.execute({
                 user_id: user.id,
+                name: 'GoBarba',
+                email: 'contato@gobarber.com',
+            }),
+        ).rejects.toBeInstanceOf(AppError);
+    });
+
+    it('should NOT be able show update the update from non-existing user', async () => {
+        expect(
+            updateProfile.execute({
+                user_id: 'non-existing-user',
                 name: 'GoBarba',
                 email: 'contato@gobarber.com',
             }),
