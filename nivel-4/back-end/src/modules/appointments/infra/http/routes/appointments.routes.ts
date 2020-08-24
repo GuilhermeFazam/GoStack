@@ -4,17 +4,10 @@ import AppointmentsController from '@modules/appointments/infra/http/controllers
 import ProviderAppointmentsController from '../controllers/ProviderAppointmentsController';
 
 const appointmentsRouter = Router();
-
 const appointmentsController = new AppointmentsController();
 const providerAppointmentsController = new ProviderAppointmentsController();
 
 appointmentsRouter.use(ensureAuthenticated);
-
-// appointmentsRouter.get('/', async (request, response) => {
-//     const appointment = await appointmentsRepository.find();
-
-//     return response.json(appointment);
-// });
 
 appointmentsRouter.post('/', appointmentsController.create);
 appointmentsRouter.get('/me', providerAppointmentsController.index);
