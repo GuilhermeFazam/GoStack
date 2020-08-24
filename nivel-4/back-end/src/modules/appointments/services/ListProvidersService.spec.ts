@@ -1,14 +1,10 @@
-// import AppError from '@shared/errors/AppError';
-import AppError from '@shared/errors/AppError';
-
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
-
 import ListProvidersService from './ListProvidersService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let listProviders: ListProvidersService;
 
-describe('ListProvidersService', () => {
+describe('ListProviders', () => {
     beforeEach(() => {
         fakeUsersRepository = new FakeUsersRepository();
 
