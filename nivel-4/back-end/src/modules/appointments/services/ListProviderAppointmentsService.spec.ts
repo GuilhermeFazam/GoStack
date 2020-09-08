@@ -1,14 +1,19 @@
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import ListProviderAppointmentsService from './ListProviderAppointmentsService';
 import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentsRepository';
 
 let fakeAppointmentsRepository: FakeAppointmentRepository;
+let fakeCacheProvider: FakeCacheProvider;
 let listProviderAppointments: ListProviderAppointmentsService;
 
 describe('ListProviderAppointments', () => {
     beforeEach(() => {
         fakeAppointmentsRepository = new FakeAppointmentRepository();
+        fakeCacheProvider = new FakeCacheProvider();
+
         listProviderAppointments = new ListProviderAppointmentsService(
             fakeAppointmentsRepository,
+            fakeCacheProvider,
         );
     });
 
