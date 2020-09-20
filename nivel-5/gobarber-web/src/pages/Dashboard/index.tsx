@@ -1,11 +1,33 @@
-import React from 'react';
-
-import { FiPower } from 'react-icons/fi';
-import { Container, Header, HeaderContent, Profile } from './styles';
+import React, { useCallback, useState } from 'react';
+import DayPicker, { DayModifiers } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
+import { FiClock, FiPower } from 'react-icons/fi';
+import {
+    Container,
+    Header,
+    HeaderContent,
+    Profile,
+    Content,
+    Schedule,
+    NextAppointment,
+    Section,
+    Appointment,
+    Calendar,
+} from './styles';
 import logo from '../../assets/logo.svg';
 import { useAlth } from '../../hooks/auth';
 
 const Dashboard: React.FC = () => {
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const handleDateChange = useCallback(
+        (day: Date, modifiers: DayModifiers) => {
+            if (modifiers.available) {
+                setSelectedDate(day);
+            }
+        },
+        [],
+    );
     const { signOut, user } = useAlth();
     return (
         <Container>
@@ -25,6 +47,134 @@ const Dashboard: React.FC = () => {
                     </button>
                 </HeaderContent>
             </Header>
+
+            <Content>
+                <Schedule>
+                    <h1>Horarios Agendados</h1>
+                    <p>
+                        <span>Hoje</span>
+                        <span>Dia 06</span>
+                        <span>Segunda</span>
+                    </p>
+
+                    <NextAppointment>
+                        <strong>Atendimento a seguir</strong>
+                        <div>
+                            <img
+                                src="https://avatars2.githubusercontent.com/u/5084382?s=460&u=a0594186c875d50447d8d9b8bdc37ae320805631&v=4"
+                                alt="Guilehrme"
+                            />
+                            <strong>Guilherme Fazam</strong>
+                            <span>
+                                <FiClock />
+                                8:00
+                            </span>
+                        </div>
+                    </NextAppointment>
+                    <Section>
+                        <strong>Manhã</strong>
+
+                        <Appointment>
+                            <span>
+                                <FiClock />
+                                8:00
+                            </span>
+                            <div>
+                                <img
+                                    src="https://avatars2.githubusercontent.com/u/5084382?s=460&u=a0594186c875d50447d8d9b8bdc37ae320805631&v=4"
+                                    alt="Guilehrme"
+                                />
+                                <strong>Guilherme Fazam</strong>
+                            </div>
+                        </Appointment>
+                        <Appointment>
+                            <span>
+                                <FiClock />
+                                8:00
+                            </span>
+                            <div>
+                                <img
+                                    src="https://avatars2.githubusercontent.com/u/5084382?s=460&u=a0594186c875d50447d8d9b8bdc37ae320805631&v=4"
+                                    alt="Guilehrme"
+                                />
+                                <strong>Guilherme Fazam</strong>
+                            </div>
+                        </Appointment>
+                    </Section>
+                    <Section>
+                        <strong>Tarde</strong>
+                        <Appointment>
+                            <span>
+                                <FiClock />
+                                8:00
+                            </span>
+                            <div>
+                                <img
+                                    src="https://avatars2.githubusercontent.com/u/5084382?s=460&u=a0594186c875d50447d8d9b8bdc37ae320805631&v=4"
+                                    alt="Guilehrme"
+                                />
+                                <strong>Guilherme Fazam</strong>
+                            </div>
+                        </Appointment>
+                        <Appointment>
+                            <span>
+                                <FiClock />
+                                8:00
+                            </span>
+                            <div>
+                                <img
+                                    src="https://avatars2.githubusercontent.com/u/5084382?s=460&u=a0594186c875d50447d8d9b8bdc37ae320805631&v=4"
+                                    alt="Guilehrme"
+                                />
+                                <strong>Guilherme Fazam</strong>
+                            </div>
+                        </Appointment>
+                        <Appointment>
+                            <span>
+                                <FiClock />
+                                8:00
+                            </span>
+                            <div>
+                                <img
+                                    src="https://avatars2.githubusercontent.com/u/5084382?s=460&u=a0594186c875d50447d8d9b8bdc37ae320805631&v=4"
+                                    alt="Guilehrme"
+                                />
+                                <strong>Guilherme Fazam</strong>
+                            </div>
+                        </Appointment>
+                    </Section>
+                </Schedule>
+                <Calendar>
+                    <DayPicker
+                        weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+                        months={[
+                            'Janeiro',
+                            'Fevereiro',
+                            'Março',
+                            'Abril',
+                            'Maio',
+                            'Junho',
+                            'Julho',
+                            'Agosto',
+                            'Setembro',
+                            'Outubro',
+                            'Novembro',
+                            'Dezembro',
+                        ]}
+                        fromMonth={new Date()}
+                        disabledDays={[
+                            {
+                                daysOfWeek: [0, 6],
+                            },
+                        ]}
+                        modifiers={{
+                            available: { daysOfWeek: [1, 2, 3, 4, 5] },
+                        }}
+                        onDayClick={handleDateChange}
+                        selectedDays={selectedDate}
+                    />
+                </Calendar>
+            </Content>
         </Container>
     );
 };
