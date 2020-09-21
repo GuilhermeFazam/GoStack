@@ -247,7 +247,7 @@ export const Calendar = styled.aside`
         height: 40px;
     }
 
-    .DayPicker-Day--available:not(.DayPicker-Day--outside, .DayPicker-Day--disabled) {
+    .DayPicker-Day--available:not(.DayPicker-Day--outside) {
         background: #3e3b47;
         border-radius: 10px;
         color: #fff;
