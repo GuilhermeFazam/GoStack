@@ -247,10 +247,16 @@ export const Calendar = styled.aside`
         height: 40px;
     }
 
-    .DayPicker-Day--available:not(.DayPicker-Day--outside) {
+    .DayPicker-Day--available:not(.DayPicker-Day--outside, .DayPicker-Day--disabled) {
         background: #3e3b47;
         border-radius: 10px;
         color: #fff;
+
+        &.DayPicker-Day--selected {
+            background: #ff9000 !important;
+            border-radius: 10px;
+            color: #232129;
+        }
     }
 
     .DayPicker:not(.DayPicker--interactionDisabled)
@@ -262,11 +268,7 @@ export const Calendar = styled.aside`
         color: #666360 !important;
         background: transparent !important;
     }
-    .DayPicker-Day--selected {
-        background: #ff9000 !important;
-        border-radius: 10px;
-        color: #232129;
-    }
+
     .DayPicker-Day--today {
         background: #3e3b47 !important;
         border-radius: 10px;
