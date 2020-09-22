@@ -51,6 +51,9 @@ export const Profile = styled.div`
     span {
         color: #f4ede8;
     }
+    a {
+        text-decoration: none;
+    }
     strong {
         color: #ff9000;
     }
