@@ -16,7 +16,9 @@ import { Container, Content, AvatarInput } from './styles';
 interface ProfileForData {
     name: string;
     email: string;
+    old_password: string;
     password: string;
+    password_confirmation: string;
 }
 
 const Profile: React.FC = () => {
@@ -53,24 +55,60 @@ const Profile: React.FC = () => {
                     email: Yup.string()
                         .required('E-mail obrigatório')
                         .email('E-mail inválido'),
-                    password: Yup.string().required('Senha obrigatória'),
-                    password_confirmation: Yup.string().oneOf(
-                        [Yup.ref('password'), undefined],
-                        'Confirmação de senha incorreta',
-                    ),
+                    old_password: Yup.string(),
+                    password: Yup.string().when('old_password', {
+                        is: val => !!val.length,
+                        then: Yup.string().required('Senha obrigatória'),
+                        otherwise: Yup.string(),
+                    }),
+                    password_confirmation: Yup.string()
+                        .when('old_password', {
+                            is: val => !!val.length,
+                            then: Yup.string().required(
+                                'Confirmação de senha obrigatória',
+                            ),
+                            otherwise: Yup.string(),
+                        })
+                        .oneOf(
+                            [Yup.ref('password'), undefined],
+                            'Confirmação de senha incorreta',
+                        ),
                 });
 
                 await schema.validate(data, {
                     abortEarly: false,
                 });
 
-                // await api.post('/users', data);
+                const {
+                    name,
+                    email,
+                    old_password,
+                    password,
+                    password_confirmation,
+                } = data;
+
+                const formData = {
+                    name,
+                    email,
+                    ...(old_password
+                        ? {
+                              old_password,
+                              password,
+                              password_confirmation,
+                          }
+                        : {}),
+                };
+
+                const response = await api.put('/profile', formData);
+
+                updateUser(response.data);
                 history.push('/dashboard');
 
                 addToast({
                     type: 'success',
-                    title: 'Cadastro realizado com sucesso!',
-                    description: 'Você ja pode fazer o logon no GoBarber',
+                    title: 'Perfil atualizado com sucesso!',
+                    description:
+                        'As novas informações do seu perfil foram atualizadas.',
                 });
             } catch (err) {
                 if (err instanceof Yup.ValidationError) {
@@ -85,7 +123,7 @@ const Profile: React.FC = () => {
                 });
             }
         },
-        [addToast, history],
+        [addToast, history, updateUser],
     );
 
     return (
