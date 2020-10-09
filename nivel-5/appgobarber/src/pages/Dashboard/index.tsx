@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useAlth } from '../../hooks/auth';
@@ -43,8 +42,8 @@ const Dashboard: React.FC = () => {
     }, [signOut]);
 
     const navigateToCreateAppointment = useCallback(
-        (prodiderId: string) => {
-            navigate('CreateAppointment', { prodiderId });
+        (providerId: string) => {
+            navigate('CreateAppointment', { providerId });
         },
         [navigate],
     );
@@ -61,49 +60,38 @@ const Dashboard: React.FC = () => {
                     <UserAvatar source={{ uri: user.avatar_url }} />
                 </ProfileButton>
             </Header>
-            <ScrollView style={{ flex: 1 }}>
-                <ProvidersList
-                    data={providers}
-                    keyExtractor={provider => provider.id}
-                    ListHeaderComponent={
-                        <ProvidersListTitle>Cabeleireiros</ProvidersListTitle>
-                    }
-                    renderItem={({ item: provider }) => (
-                        <ProviderContainer
-                            onPress={() =>
-                                navigateToCreateAppointment(provider.id)
-                            }
-                        >
-                            <ProviderAvatar
-                                source={{ uri: provider.avatar_url }}
-                            />
-                            <ProviderInfo>
-                                <ProviderName>{provider.name}</ProviderName>
-                                <ProviderMeta>
-                                    <Icon
-                                        name="calendar"
-                                        size={14}
-                                        color="#ff9000"
-                                    />
-                                    <ProviderMetaText>
-                                        Segunda à sexta
-                                    </ProviderMetaText>
-                                </ProviderMeta>
-                                <ProviderMeta>
-                                    <Icon
-                                        name="clock"
-                                        size={14}
-                                        color="#ff9000"
-                                    />
-                                    <ProviderMetaText>
-                                        8h às 18h
-                                    </ProviderMetaText>
-                                </ProviderMeta>
-                            </ProviderInfo>
-                        </ProviderContainer>
-                    )}
-                />
-            </ScrollView>
+
+            <ProvidersList
+                data={providers}
+                keyExtractor={provider => provider.id}
+                ListHeaderComponent={
+                    <ProvidersListTitle>Cabeleireiros</ProvidersListTitle>
+                }
+                renderItem={({ item: provider }) => (
+                    <ProviderContainer
+                        onPress={() => navigateToCreateAppointment(provider.id)}
+                    >
+                        <ProviderAvatar source={{ uri: provider.avatar_url }} />
+                        <ProviderInfo>
+                            <ProviderName>{provider.name}</ProviderName>
+                            <ProviderMeta>
+                                <Icon
+                                    name="calendar"
+                                    size={14}
+                                    color="#ff9000"
+                                />
+                                <ProviderMetaText>
+                                    Segunda à sexta
+                                </ProviderMetaText>
+                            </ProviderMeta>
+                            <ProviderMeta>
+                                <Icon name="clock" size={14} color="#ff9000" />
+                                <ProviderMetaText>8h às 18h</ProviderMetaText>
+                            </ProviderMeta>
+                        </ProviderInfo>
+                    </ProviderContainer>
+                )}
+            />
         </Container>
     );
 };
