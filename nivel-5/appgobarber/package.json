@@ -5,12 +5,13 @@
     "scripts": {
         "android": "react-native run-android",
         "ios": "react-native run-ios",
-        "start": "react-native start",
+        "start": "adb reverse tcp:3333 tcp:3333 && react-native start",
         "test": "jest",
         "lint": "eslint ."
     },
     "dependencies": {
         "@react-native-community/async-storage": "^1.11.0",
+        "@react-native-community/datetimepicker": "^3.0.3",
         "@react-native-community/masked-view": "^0.1.10",
         "@react-navigation/native": "^5.7.1",
         "@react-navigation/stack": "^5.7.1",
