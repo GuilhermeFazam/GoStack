@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
+import { format } from 'date-fns';
 import {
     Container,
     Header,
@@ -35,7 +36,7 @@ interface Provider {
 
 interface availabilityItem {
     hour: number;
-    avaliable: boolean;
+    available: boolean;
 }
 
 const CreateAppointment: React.FC = () => {
@@ -93,6 +94,30 @@ const CreateAppointment: React.FC = () => {
         [],
     );
 
+    const morningAvailability = useMemo(() => {
+        return availability
+            .filter(({ hour }) => hour < 12)
+            .map(({ hour, available }) => {
+                return {
+                    hour,
+                    available,
+                    hourFomatted: format(new Date().setHours(hour), 'HH:00'),
+                };
+            });
+    }, [availability]);
+
+    const afternoonAvailability = useMemo(() => {
+        return availability
+            .filter(({ hour }) => hour >= 12)
+            .map(({ hour, available }) => {
+                return {
+                    hour,
+                    available,
+                    hourFomatted: format(new Date().setHours(hour), 'HH:00'),
+                };
+            });
+    }, [availability]);
+
     return (
         <Container>
             <Header>
@@ -127,13 +152,11 @@ const CreateAppointment: React.FC = () => {
             </ProvidersListContainer>
             <Calendar>
                 <CalendarTitle>Escolha a Data</CalendarTitle>
-
                 <OpenDatePickerButton onPress={handleToggleDatePicker}>
                     <OpenDatePickerButtonText>
                         Selecionar outra data
                     </OpenDatePickerButtonText>
                 </OpenDatePickerButton>
-
                 {showDatePicker && (
                     <DateTimePicker
                         mode="date"
@@ -143,6 +166,12 @@ const CreateAppointment: React.FC = () => {
                     />
                 )}
             </Calendar>
+            {morningAvailability.map(({ hourFomatted, available }) => (
+                <CalendarTitle key={hourFomatted}>{hourFomatted}</CalendarTitle>
+            ))}
+            {afternoonAvailability.map(({ hourFomatted, available }) => (
+                <CalendarTitle key={hourFomatted}>{hourFomatted}</CalendarTitle>
+            ))}
         </Container>
     );
 };
