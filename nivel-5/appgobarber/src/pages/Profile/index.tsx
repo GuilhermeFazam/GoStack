@@ -7,6 +7,7 @@ import {
     TextInput,
     Alert,
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
 import { Form } from '@unform/mobile';
@@ -55,15 +56,13 @@ const SignUp: React.FC = () => {
                         .email('E-mail inválido'),
                     old_password: Yup.string(),
                     password: Yup.string().when('old_password', {
-                        // eslint-disable-next-line prettier/prettier
-                        is: (val) => !!val.length,
+                        is: val => !!val.length,
                         then: Yup.string().required('Senha obrigatória'),
                         otherwise: Yup.string(),
                     }),
                     password_confirmation: Yup.string()
                         .when('old_password', {
-                            // eslint-disable-next-line prettier/prettier
-                            is: (val) => !!val.length,
+                            is: val => !!val.length,
                             then: Yup.string().required(
                                 'Confirmação de senha obrigatória',
                             ),
@@ -107,7 +106,6 @@ const SignUp: React.FC = () => {
 
                 natigation.goBack();
             } catch (err) {
-                console.log(err);
                 if (err instanceof Yup.ValidationError) {
                     const error = getValidationErros(err);
                     formRef.current.setErrors(error);
@@ -125,6 +123,45 @@ const SignUp: React.FC = () => {
     const handleGoBack = useCallback(() => {
         natigation.goBack();
     }, [natigation]);
+
+    const handleUpdateAvatar = useCallback(() => {
+        ImagePicker.showImagePicker(
+            {
+                title: 'Selecione um Avatar',
+                cancelButtonTitle: 'Cancelar',
+                takePhotoButtonTitle: 'Usar Câmera',
+                chooseFromLibraryButtonTitle: 'Escolha da galeria',
+            },
+            response => {
+                if (response.didCancel) {
+                    return;
+                }
+                if (response.error) {
+                    Alert.alert('Erro ao selecionar o Avatar');
+                    return;
+                }
+
+                const data = new FormData();
+
+                data.append('avatar', {
+                    type: 'image/jpeg',
+                    name: `${user.id}.jpg`,
+                    uri: response.uri,
+                });
+
+                api.patch('users/avatar', data).then(apiResponse => {
+                    updateUser(apiResponse.data);
+                });
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                // this.setState({
+                //     avatarSource: source,
+                // });
+            },
+        );
+    }, [updateUser, user.id]);
 
     return (
         <>
@@ -145,7 +182,7 @@ const SignUp: React.FC = () => {
                                 color="#999591"
                             />
                         </BackButton>
-                        <UserAvatarButton onPress={handleGoBack}>
+                        <UserAvatarButton onPress={handleUpdateAvatar}>
                             <UserAvatar source={{ uri: user.avatar_url }} />
                         </UserAvatarButton>
 
