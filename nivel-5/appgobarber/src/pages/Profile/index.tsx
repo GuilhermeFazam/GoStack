@@ -25,14 +25,16 @@ import {
 } from './styles';
 import { useAuth } from '../../hooks/auth';
 
-interface SignUpForData {
+interface ProfileForData {
     name: string;
     email: string;
+    old_password: string;
     password: string;
+    password_confirmation: string;
 }
 
 const SignUp: React.FC = () => {
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const formRef = useRef<FormHandles>(null);
     const natigation = useNavigation();
 
@@ -42,7 +44,7 @@ const SignUp: React.FC = () => {
     const confirmPasswordInputRef = useRef<TextInput>(null);
 
     const handleSignUp = useCallback(
-        async (data: SignUpForData) => {
+        async (data: ProfileForData) => {
             try {
                 formRef.current.setErrors({});
 
@@ -51,37 +53,73 @@ const SignUp: React.FC = () => {
                     email: Yup.string()
                         .required('E-mail obrigatório')
                         .email('E-mail inválido'),
-                    password: Yup.string()
-                        .required('Senha obrigatória')
-                        .min(6, 'Minimo de 6 caractéres'),
+                    old_password: Yup.string(),
+                    password: Yup.string().when('old_password', {
+                        // eslint-disable-next-line prettier/prettier
+                        is: (val) => !!val.length,
+                        then: Yup.string().required('Senha obrigatória'),
+                        otherwise: Yup.string(),
+                    }),
+                    password_confirmation: Yup.string()
+                        .when('old_password', {
+                            // eslint-disable-next-line prettier/prettier
+                            is: (val) => !!val.length,
+                            then: Yup.string().required(
+                                'Confirmação de senha obrigatória',
+                            ),
+                            otherwise: Yup.string(),
+                        })
+                        .oneOf(
+                            [Yup.ref('password'), undefined],
+                            'Confirmação de senha incorreta',
+                        ),
                 });
 
                 await schema.validate(data, {
                     abortEarly: false,
                 });
 
-                await api.post('/users', data);
+                const {
+                    name,
+                    email,
+                    old_password,
+                    password,
+                    password_confirmation,
+                } = data;
 
-                Alert.alert(
-                    `${data.name} Cadastro realizado`,
-                    'Pode utilizar o aplicativo!',
-                );
+                const formData = {
+                    name,
+                    email,
+                    ...(old_password
+                        ? {
+                              old_password,
+                              password,
+                              password_confirmation,
+                          }
+                        : {}),
+                };
 
-                // natigation.navigate('SignIn');
+                const response = await api.put('/profile', formData);
+
+                updateUser(response.data);
+
+                Alert.alert('Perfil atualizado com sucesso');
+
                 natigation.goBack();
             } catch (err) {
+                console.log(err);
                 if (err instanceof Yup.ValidationError) {
                     const error = getValidationErros(err);
                     formRef.current.setErrors(error);
                     return;
                 }
                 Alert.alert(
-                    'Erro ao Cadastrar',
-                    'Erro ao Cadastrar um novo usuário.',
+                    'Erro na atualização do Perfil',
+                    'Erro ao atualizar um novo usuário.',
                 );
             }
         },
-        [natigation],
+        [natigation, updateUser],
     );
 
     const handleGoBack = useCallback(() => {
@@ -114,7 +152,11 @@ const SignUp: React.FC = () => {
                         <View>
                             <Title>Meu Perfil</Title>
                         </View>
-                        <Form ref={formRef} onSubmit={handleSignUp}>
+                        <Form
+                            initialData={user}
+                            ref={formRef}
+                            onSubmit={handleSignUp}
+                        >
                             <Input
                                 autoCapitalize="words"
                                 name="name"
