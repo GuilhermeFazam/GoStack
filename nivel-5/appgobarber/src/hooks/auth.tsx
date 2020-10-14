@@ -94,7 +94,7 @@ const AuthProvider: React.FC = ({ children }) => {
     );
 };
 
-function useAlth(): AuthContextData {
+function useAuth(): AuthContextData {
     const context = useContext(AuthContext);
 
     if (!context) {
@@ -104,4 +104,4 @@ function useAlth(): AuthContextData {
     return context;
 }
 
-export { AuthProvider, useAlth };
+export { AuthProvider, useAuth };

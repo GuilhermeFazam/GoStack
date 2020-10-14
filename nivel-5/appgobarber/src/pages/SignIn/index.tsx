@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 
-import { useAlth } from '../../hooks/auth';
+import { useAuth } from '../../hooks/auth';
 
 import getValidationErros from '../../utils/getValidationErros';
 
@@ -40,7 +40,7 @@ const SignIn: React.FC = () => {
     const passwordInputRef = useRef<TextInput>(null);
     const natigation = useNavigation();
 
-    const { signIn } = useAlth();
+    const { signIn } = useAuth();
 
     const handleSignIn = useCallback(
         async (data: SignInFormData) => {

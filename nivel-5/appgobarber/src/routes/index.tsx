@@ -4,10 +4,10 @@ import { View, ActivityIndicator } from 'react-native';
 import AuthRoutes from './auth.routes';
 import AppRoutes from './app.routes';
 
-import { useAlth } from '../hooks/auth';
+import { useAuth } from '../hooks/auth';
 
 const Routes: React.FC = () => {
-    const { user, loading } = useAlth();
+    const { user, loading } = useAuth();
 
     if (loading) {
         return (

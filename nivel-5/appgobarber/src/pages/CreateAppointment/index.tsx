@@ -29,9 +29,9 @@ import {
     HourText,
     CreateAppointmentButton,
     CreateAppointmentButtonText,
-} from './style';
+} from './styles';
 
-import { useAlth } from '../../hooks/auth';
+import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
 interface RouteParams {
@@ -49,7 +49,7 @@ interface availabilityItem {
 }
 
 const CreateAppointment: React.FC = () => {
-    const { user } = useAlth();
+    const { user } = useAuth();
     const route = useRoute();
     const routeParams = route.params as RouteParams;
     const { goBack, navigate } = useNavigation();
